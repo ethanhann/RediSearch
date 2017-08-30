@@ -110,11 +110,18 @@ test_khtable: khtable
 	./test_khtable
 .PHONY: test_khtable
 
-build: stemmer trie index range extensions query stopwords blkalloc khtable
+summarize: test_summarize.o
+	$(CC) $(CFLAGS) -o test_summarize $^ $(DEPS) $(LDFLAGS)
+
+test_summarize: summarize
+	./test_summarize
+.PHONY: test_summarize
+
+build: stemmer trie index range extensions query stopwords blkalloc khtable summarize
 
 	
 test: test_index test_stemmer test_trie	 test_range test_extensions test_query test_stopwords \
-	test_qint test_blkalloc test_khtable
+	test_qint test_blkalloc test_khtable test_summarize
 
 all: build test bench-decoder
 
