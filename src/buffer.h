@@ -96,6 +96,21 @@ static inline size_t Buffer_Reserve(Buffer *buf, size_t n) {
   return 1;
 }
 
+/**
+ * 'Reserves' a certain amount of space in the buffer, and returns a pointer
+ * to the newly reserved memory
+ */
+static inline void *Buffer_AddToSize(Buffer *b, size_t addedSize) {
+  Buffer_Reserve(b, b->offset + addedSize);
+  void *ret = b->data + b->offset;
+  b->offset += addedSize;
+  return ret;
+}
+
+#define BUFFER_GETSIZE_AS(b, T) ((b)->offset / sizeof(T))
+
+#define Buffer_GetData(b) (b)->data
+
 BufferWriter NewBufferWriter(Buffer *b);
 BufferReader NewBufferReader(Buffer *b);
 
